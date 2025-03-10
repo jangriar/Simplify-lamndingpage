@@ -1,12 +1,18 @@
 import { useEffect } from "react";
-
+import { AppProps } from "next/app";
 import "../../globals.css"; // Import global styles
 import MainLayout from "../components/Layout/MainLayout"; // Import your main layout
 import ErrorBoundary from "@/components/ErrorBoundary/ErrorBoundary";
+import { MAINLAYOUT } from "@/components/Layout/types";
 
-// Define a simple layout wrapper
-const LayoutWrapper = ({ children }) => {
-  return <MainLayout>{children}</MainLayout>;
+// For JSX file we'll remove TypeScript type definitions
+const LayoutWrapper = (props) => {
+  console.log(props);
+  if (props.layout === MAINLAYOUT) {
+    return <MainLayout>{props.children}</MainLayout>;
+  } else {
+    return <div>{props.children}</div>;
+  }
 };
 
 // Define the App component
@@ -18,7 +24,7 @@ export const App = ({ Component, pageProps }) => {
 
   return (
     <ErrorBoundary>
-      <LayoutWrapper>
+      <LayoutWrapper layout={Component.Layout}>
         <Component {...pageProps} />
       </LayoutWrapper>
     </ErrorBoundary>

@@ -1,16 +1,17 @@
-import LandingPage from "@/components/LandingPage";
-import PageIntro from "@/components/LandingPage";
+import Home from "@/components/Home";
+import { MAINLAYOUT } from "@/components/Layout/types";
 
 const Page = () => {
-  <>
-    <div>
-      <div className="h-full w-full">
-        <div>
-          <LandingPage />
+  return (
+    <>
+      <div>
+        <div className="h-full w-full">
+          <Home />
         </div>
       </div>
-    </div>
-  </>;
+    </>
+  );
 };
 
 export default Page;
+Page.Layout = MAINLAYOUT;
