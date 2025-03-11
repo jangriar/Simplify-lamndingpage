@@ -3,7 +3,10 @@ import React, { useEffect, useRef } from "react";
 const LogoCarousel = () => {
   const containerRef = useRef(null);
   const logos = [
-    // { src: "https://cdn.prod.website-files.com/6643307d563d3d1613330141/6643307d563d3d1613330319_2.svg", className: "h-24 w-24" },
+    {
+      src: "https://cdn.prod.website-files.com/6643307d563d3d1613330141/6643307d563d3d1613330319_2.svg",
+      className: "h-24 w-24",
+    },
     {
       src: "https://cdn.prod.website-files.com/6643307d563d3d1613330141/6643307d563d3d1613330318_23.svg",
       className: "h-20 w-32",
@@ -34,19 +37,43 @@ const LogoCarousel = () => {
     const container = containerRef.current;
     let animationId;
     let position = 0;
+    
+    // Calculate the width of a single set of logos
+    const calculateWidth = () => {
+      if (!container) return 0;
+      const logoElements = container.querySelectorAll(".logo-item");
+      let totalWidth = 0;
+      logoElements.forEach((element, index) => {
+        if (index < logos.length) { // Only count one set
+          totalWidth += element.offsetWidth + 48; // Width + margin
+        }
+      });
+      return totalWidth;
+    };
 
     const animate = () => {
+      const width = calculateWidth();
+      if (width === 0) {
+        animationId = requestAnimationFrame(animate);
+        return;
+      }
+      
       position -= 1;
-      if (position <= -2500) {
+      if (position <= -width) {
         position = 0;
       }
+      
       if (container) {
         container.style.transform = `translate3d(${position}px, 0px, 0px)`;
       }
+      
       animationId = requestAnimationFrame(animate);
     };
 
-    animationId = requestAnimationFrame(animate);
+    // Start animation after a slight delay to ensure DOM is ready
+    setTimeout(() => {
+      animationId = requestAnimationFrame(animate);
+    }, 100);
 
     return () => {
       cancelAnimationFrame(animationId);
@@ -54,43 +81,33 @@ const LogoCarousel = () => {
   }, []);
 
   return (
-    <section className="py-12 overflow-hidden">
-      <div className="flex flex-col gap-6">
-        <div className="text-center">
-          <div className="font-bold tracking-widest text-sm">
+    <div className="w-full overflow-hidden bg-gray-50 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8">
+          <h2 className="text-lg font-semibold text-gray-600">
             TRUSTED BY 5,000+ TEAMS
-          </div>
+          </h2>
         </div>
         <div className="relative overflow-hidden">
-          <div
-            ref={containerRef}
-            className="flex items-center will-change-transform"
-            style={{ transformStyle: "preserve-3d" }}
+          <div 
+            ref={containerRef} 
+            className="flex items-center"
+            style={{ willChange: "transform" }}
           >
-            <div className="flex items-center gap-8 px-4">
-              {logos.map((logo, index) => (
-                <img
-                  key={`logo-1-${index}`}
-                  src={logo.src}
-                  alt="Company logo"
-                  className={`${logo.className} object-contain opacity-70 grayscale`}
-                />
-              ))}
-            </div>
-            <div className="flex items-center gap-8 px-4">
-              {logos.map((logo, index) => (
-                <img
-                  key={`logo-2-${index}`}
-                  src={logo.src}
-                  alt="Company logo"
-                  className={`${logo.className} object-contain opacity-70 grayscale`}
-                />
-              ))}
-            </div>
+            {logos.map((logo, index) => (
+              <div key={`first-${index}`} className="logo-item mx-6 flex-shrink-0">
+                <img src={logo.src} alt={`Partner logo ${index + 1}`} className={logo.className} />
+              </div>
+            ))}
+            {logos.map((logo, index) => (
+              <div key={`second-${index}`} className="logo-item mx-6 flex-shrink-0">
+                <img src={logo.src} alt={`Partner logo ${index + 1}`} className={logo.className} />
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

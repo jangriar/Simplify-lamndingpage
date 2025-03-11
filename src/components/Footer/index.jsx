@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Footer = () => {
@@ -15,30 +16,30 @@ const Footer = () => {
           </p>
           {/* Social Media Icons */}
           <div className="flex space-x-2">
-            <a
+            <Link
               href="#"
               className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition"
             >
               <span className="text-lg">f</span>
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition"
             >
               <span className="text-lg">p</span>
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition"
             >
               <span className="text-lg">t</span>
-            </a>
-            <a
+            </Link>
+            <Link
               href="#"
               className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-700 transition"
             >
               <span className="text-lg">@</span>
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -47,22 +48,22 @@ const Footer = () => {
           <h3 className="text-xl font-semibold mb-6">Pages</h3>
           <ul className="space-y-3">
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">Features</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">Pricing</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">Docs</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -72,76 +73,76 @@ const Footer = () => {
           <h3 className="text-xl font-semibold mb-6">Free AI Tools</h3>
           <ul className="space-y-3">
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   AI Text Humanizer
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   AI Text Paraphrase
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   YouTube Blog Post Generator
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   YouTube Summarize
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   Image Description Generator
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   Image Caption Generator
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   AI Prompt Library
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   AI Prompt Generator
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   Support Savings Calculator
                 </span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -151,68 +152,68 @@ const Footer = () => {
           <h3 className="text-xl font-semibold mb-6">Comparisons</h3>
           <ul className="space-y-3">
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   Chat.base Alternative
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   Custom GPT Alternative
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   Ada AI Alternative
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   Intercom FIN Alternative
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   Forethought AI Alternative
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   Open AI GPTs Alternative
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   My Ask AI Alternative
                 </span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="flex items-center">
+              <Link href="#" className="flex items-center">
                 <span className="text-blue-400 mr-2">■</span>
                 <span className="hover:text-gray-300 transition">
                   PDF.ai Alternative
                 </span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -225,19 +226,19 @@ const Footer = () => {
             Copyright © Simplify. All Rights Reserved.
           </p>
           <div className="flex space-x-4 mt-2 md:mt-0">
-            <a
+            <Link
               href="#"
               className="text-sm text-gray-400 hover:text-gray-300 transition"
             >
               Privacy Policy
-            </a>
+            </Link>
             <span className="text-gray-600">·</span>
-            <a
+            <Link
               href="#"
               className="text-sm text-gray-400 hover:text-gray-300 transition"
             >
               Terms & Conditions
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,3 +1,5 @@
+import { navLinks } from "@/utils/contants";
+import Link from "next/link";
 import React from "react";
 
 const Header = () => {
@@ -12,31 +14,26 @@ const Header = () => {
 
         {/* Navigation */}
         <nav className="hidden md:flex space-x-8">
-          <a href="#features" className="hover:text-blue-400 transition-colors">
-            Features
-          </a>
-          <a
-            href="#solutions"
-            className="hover:text-blue-400 transition-colors"
-          >
-            Solutions
-          </a>
-          <a href="#pricing" className="hover:text-blue-400 transition-colors">
-            Pricing
-          </a>
+
+        {navLinks?.map((item,index)=>(
+          <Link href={item.href} className="hover:text-blue-400 transition-colors">
+          {item.name
+          }</Link>
+        ))}
+
         </nav>
 
         {/* Auth Buttons */}
         <div className="flex items-center space-x-4">
-          <a href="/login" className="hover:text-blue-400 transition-colors">
+          <Link href="/login" className="hover:text-blue-400 transition-colors">
             Log in
-          </a>
-          <a
+          </Link>
+          <Link
             href="/try-free"
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
           >
             Try Free
-          </a>
+          </Link>
         </div>
       </div>
     </header>

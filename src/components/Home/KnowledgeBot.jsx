@@ -137,11 +137,11 @@ const KnowledgeBotLanding = () => {
 
               <div className="flex justify-end mt-4">
                 <div className="flex items-center">
-                  <img
+                  {/* <img
                     src="/api/placeholder/40/40"
                     alt="HR Representative"
                     className="w-10 h-10 rounded-full mr-2 object-cover"
-                  />
+                  /> */}
                 </div>
               </div>
             </div>

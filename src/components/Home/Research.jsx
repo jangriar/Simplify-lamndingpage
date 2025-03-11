@@ -251,7 +251,7 @@ const ResearchAssistantPage = () => {
           </div>
         </div>
 
-        <div className="fixed bottom-4 left-4">
+        <div className="fixed bottom-4 right-4">
           <button className="bg-cyan-600 text-white p-3 rounded-full shadow-lg flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -1,107 +1,97 @@
-import React, { useState, useEffect, useRef } from "react";
-
-const TypewriterText = ({ text, speed = 30, onComplete }) => {
-  const [displayText, setDisplayText] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    if (currentIndex < text.length) {
-      const timeout = setTimeout(() => {
-        setDisplayText((prev) => prev + text[currentIndex]);
-        setCurrentIndex(currentIndex + 1);
-      }, speed);
-
-      return () => clearTimeout(timeout);
-    } else if (onComplete) {
-      onComplete();
-    }
-  }, [currentIndex, text, speed, onComplete]);
-
-  return <span>{displayText}</span>;
-};
-
 const DocsBotFullPage = () => {
   const [messages, setMessages] = useState([]);
-  const [userInput, setUserInput] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const [currentTypingMessageId, setCurrentTypingMessageId] = useState(null);
+  const [chatInitialized, setChatInitialized] = useState(false);
   const messagesEndRef = useRef(null);
+  const chatSectionRef = useRef(null);
 
-  // Initial bot message
-  useEffect(() => {
-    const initialMessage = {
-      id: 1,
+  // Predefined conversation script
+  const conversationScript = [
+    {
       sender: "bot",
       text: "How can I help you today? If I can't answer your question I'll help you open a support ticket.",
-      isTyping: true,
-    };
-    setMessages([initialMessage]);
-    setCurrentTypingMessageId(1);
-  }, []);
+    },
+    {
+      sender: "user",
+      text: "What is DocsBot AI?",
+    },
+    {
+      sender: "bot",
+      text: "DocsBot AI is a tool that allows you to create custom chatbots from your documentation. It is designed to help users find answers to their questions by training the bot on your own content library. This makes it a powerful tool for providing customer support and improving user engagement with your documentation.",
+    },
+  ];
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
+  // Initialize chat only when the section is visible
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const handleUserInput = (e) => {
-    setUserInput(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!userInput.trim()) return;
-
-    // Add user message
-    const newMessages = [
-      ...messages,
-      {
-        id: messages.length + 1,
-        sender: "user",
-        text: userInput,
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !chatInitialized) {
+            // Start the auto-playing conversation when section is visible
+            setChatInitialized(true);
+            playConversation();
+          }
+        });
       },
-    ];
-
-    setMessages(newMessages);
-    setUserInput("");
-
-    // Simulate bot response after a short delay
-    setIsTyping(true);
-    setTimeout(() => {
-      let botResponse =
-        "DocsBot AI is a tool that allows you to create custom chatbots from your documentation. It is designed to help users find answers to their questions by training the bot on your own content library. This makes it a powerful tool for providing customer support and improving user engagement with your documentation.";
-
-      // If the user asks about DocsBot, give them a specific response
-      if (userInput.toLowerCase().includes("docsbot")) {
-        botResponse =
-          "DocsBot AI is a tool that allows you to create custom chatbots from your documentation. It is designed to help users find answers to their questions by training the bot on your own content library. This makes it a powerful tool for providing customer support and improving user engagement with your documentation.";
-      }
-
-      const botMessageId = newMessages.length + 1;
-      setMessages([
-        ...newMessages,
-        {
-          id: botMessageId,
-          sender: "bot",
-          text: botResponse,
-          isTyping: true,
-        },
-      ]);
-      setCurrentTypingMessageId(botMessageId);
-    }, 1000);
-  };
-
-  const handleTypingComplete = (messageId) => {
-    setMessages(
-      messages.map((msg) =>
-        msg.id === messageId ? { ...msg, isTyping: false } : msg
-      )
+      { threshold: 0.3 } // Trigger when 30% of the chat section is visible
     );
-    setIsTyping(false);
+
+    if (chatSectionRef.current) {
+      observer.observe(chatSectionRef.current);
+    }
+
+    return () => {
+      if (chatSectionRef.current) {
+        observer.unobserve(chatSectionRef.current);
+      }
+    };
+  }, [chatInitialized]);
+
+
+  // Function to play through the conversation automatically
+  const playConversation = () => {
+    let currentIndex = 0;
+    let messageId = 1;
+
+    const displayNextMessage = () => {
+      if (currentIndex < conversationScript.length) {
+        const currentMessage = conversationScript[currentIndex];
+
+        // Add message to chat
+        const newMessage = {
+          id: messageId,
+          sender: currentMessage.sender,
+          text: currentMessage.text,
+          isTyping: currentMessage.sender === "bot",
+        };
+
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        messageId++;
+        currentIndex++;
+
+        // Schedule next message with appropriate timing
+        const delay =
+          currentMessage.sender === "bot"
+            ? currentMessage.text.length * 30 + 1000 // Longer delay for bot (typing effect)
+            : 2000; // Shorter delay for user messages
+
+        setTimeout(() => {
+          // Mark typing as complete for bot messages
+          if (newMessage.sender === "bot") {
+            setMessages((prevMessages) =>
+              prevMessages.map((msg) =>
+                msg.id === newMessage.id ? { ...msg, isTyping: false } : msg
+              )
+            );
+          }
+
+          // Schedule next message
+          setTimeout(displayNextMessage, 1000);
+        }, delay);
+      }
+    };
+
+    // Start the conversation
+    displayNextMessage();
   };
 
   return (
@@ -119,7 +109,7 @@ const DocsBotFullPage = () => {
           with DocsBot.
         </p>
       </div>
-      {/* Header/Navigation */}
+     
       <header className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
           <div className="text-blue-500 text-sm font-bold tracking-widest">
@@ -128,10 +118,10 @@ const DocsBotFullPage = () => {
         </div>
       </header>
 
-      {/* Main Content */}
+      
       <main className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row items-start justify-between gap-8">
-          {/* Left column - Marketing content */}
+       
           <div className="lg:w-1/2">
             <h1 className="text-4xl font-bold text-gray-900 mb-6">
               Instant Responses to Customer Queries, 24/7
@@ -145,7 +135,7 @@ const DocsBotFullPage = () => {
             </p>
 
             <div className="space-y-6">
-              {/* Feature 1 */}
+            
               <div className="flex items-start">
                 <div className="flex-shrink-0 bg-teal-500 rounded-full p-1 mr-3">
                   <svg
@@ -174,7 +164,7 @@ const DocsBotFullPage = () => {
                 </div>
               </div>
 
-              {/* Feature 2 */}
+         
               <div className="flex items-start">
                 <div className="flex-shrink-0 bg-teal-500 rounded-full p-1 mr-3">
                   <svg
@@ -203,7 +193,7 @@ const DocsBotFullPage = () => {
                 </div>
               </div>
 
-              {/* Feature 3 */}
+            
               <div className="flex items-start">
                 <div className="flex-shrink-0 bg-teal-500 rounded-full p-1 mr-3">
                   <svg
@@ -237,20 +227,20 @@ const DocsBotFullPage = () => {
             </button>
           </div>
 
-          {/* Right column - Chat interface */}
-          <div className="lg:w-1/2 w-full mt-8 lg:mt-0">
+       
+          <div ref={chatSectionRef} className="lg:w-1/2 w-full mt-8 lg:mt-0">
             <div className="bg-white rounded-lg shadow-xl overflow-hidden border border-gray-200">
-              {/* Chat header */}
+             
               <div className="bg-blue-500 text-white p-4 rounded-t-lg">
                 <h2 className="text-xl font-bold text-center">DocsBot AI</h2>
                 <p className="text-sm text-center">
-                  Ask our AI support assistant your questions about our
+                  Watch how our AI support assistant answers questions about our
                   services.
                 </p>
               </div>
 
-              {/* Chat messages */}
-              <div className="h-96 overflow-y-auto p-4 bg-gray-50">
+        
+              <div className="h-[440px] overflow-y-auto p-4 bg-gray-50">
                 {messages.map((message) => (
                   <div
                     key={message.id}
@@ -284,11 +274,18 @@ const DocsBotFullPage = () => {
                           : "bg-blue-200 text-blue-900"
                       }`}
                     >
-                      {message.isTyping &&
-                      message.id === currentTypingMessageId ? (
+                      {message.isTyping ? (
                         <TypewriterText
                           text={message.text}
-                          onComplete={() => handleTypingComplete(message.id)}
+                          onComplete={() => {
+                            setMessages((prevMessages) =>
+                              prevMessages.map((msg) =>
+                                msg.id === message.id
+                                  ? { ...msg, isTyping: false }
+                                  : msg
+                              )
+                            );
+                          }}
                         />
                       ) : (
                         <span>{message.text}</span>
@@ -299,39 +296,15 @@ const DocsBotFullPage = () => {
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* Input form */}
-              <form onSubmit={handleSubmit} className="p-4 border-t">
-                <div className="flex items-center">
-                  <input
-                    type="text"
-                    value={userInput}
-                    onChange={handleUserInput}
-                    placeholder="Type your message..."
-                    className="flex-1 p-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    disabled={isTyping}
-                  />
-                  <button
-                    type="submit"
-                    className="bg-blue-500 text-white p-2 rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    disabled={isTyping}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
-                    </svg>
-                  </button>
+              
+              <div className="p-4 border-t bg-gray-100">
+                <div className="flex items-center justify-center">
+                  <p className="text-gray-500 text-sm text-center">
+                    This is a demonstration of an automated conversation with
+                    DocsBot AI.
+                  </p>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
@@ -339,5 +312,3 @@ const DocsBotFullPage = () => {
     </div>
   );
 };
-
-export default DocsBotFullPage;
